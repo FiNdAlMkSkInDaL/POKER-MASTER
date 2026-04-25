@@ -1,0 +1,31 @@
+# Project Overview: Local AI Poker Tutor & Simulator
+
+## The Premise
+We are building a locally hosted No-Limit Texas Hold'em simulator designed to coach the user and improve their fundamentals. The core mechanic is that the user must articulate their reasoning for their actions (e.g., "I am calling because I have the pot odds to hit my flush"). Behind the scenes, the game state and the user's reasoning are packaged into a prompt and sent to an LLM (Large Language Model), which acts as an expert poker coach to critique the play and correct mistakes.
+
+This is a **two-phase project**:
+* **Phase 1 (Current):** Build the core game engine, the User Interface, and integrate the LLM for real-time conversational feedback based on poker fundamentals.
+* **Phase 2 (Future):** Integrate the GTO+ post-flop solver via a local socket connection to provide mathematically perfect post-flop tree analysis. 
+
+## Tech Stack
+* **Language:** Python 3.x
+* **UI Framework:** Streamlit (or Gradio) for rapid prototyping of a web interface that can handle both the game display and a chat window.
+* **Game Engine:** `clubs` (fschlatt/clubs), `RLCard`, or `PyPokerEngine` to handle deck logic, hand evaluation, betting rounds, and pot management.
+* **LLM Integration:** Ollama (for running local models) or a standard API wrapper (OpenAI/Gemini) for cloud-based models. 
+* **Phase 2 Solver:** GTO+ (via unofficial local socket interface using `customconnect.txt` on port 55143, potentially utilizing the `gto-` wrapper).
+
+## System Architecture (Phase 1)
+1.  **Game State Manager:** Tracks blinds, stacks, positions, hole cards, community cards, and betting history.
+2.  **UI Layer:** Displays the table. Provides a text input box for the user's "Action" (e.g., Call, Raise $X, Fold) AND their "Reasoning".
+3.  **Prompt Generator:** Takes the current Game State + User Action + User Reasoning and formats it into a structured prompt.
+4.  **LLM Critic:** Receives the prompt, evaluates the play, and returns a critique to the UI layer.
+
+## Agent Roles (Team of 4)
+You are acting as a team of 4 parallel coding agents. Please assume your respective roles to ensure modular, clean code:
+* **Agent 1 (The Game Master):** Responsible for the core Python poker engine. Your job is to set up the environment, deal cards, evaluate hands, and maintain a strict dictionary/JSON of the current `GameState`.
+* **Agent 2 (The Frontend Dev):** Responsible for the Streamlit/Gradio interface. You will build the visual representation of the game state, the betting controls, and the chat/critique interface.
+* **Agent 3 (The AI Engineer):** Responsible for the LLM integration. You will write the prompt engineering logic, handle the API/Ollama calls, and ensure the LLM receives clean, formatted game states.
+* **Agent 4 (The Architect & Phase 2 Lead):** Responsible for the overall codebase structure and future-proofing. You ensure that Agent 1, 2, and 3's code connects smoothly. You also must ensure the architecture is built in a way that allows us to easily hook up GTO+ via Python sockets in Phase 2 without rewriting the core engine.
+
+## Immediate Next Steps
+Acknowledge these instructions. Agent 4 should provide a proposed file directory structure for the project. Agent 1 should suggest which open-source Poker Engine library we should use as our foundation. Wait for user approval before writing the core logic.
